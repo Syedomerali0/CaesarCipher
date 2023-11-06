@@ -1,0 +1,108 @@
+<html>
+  <head>
+    <title>caesar Cipher</title>
+    <link rel="stylesheet" href="Caesar.css">
+
+  </head>
+  <body>
+    <div class="container">
+        <h2>Caesar Cipher Encryption and Decryption</h2>
+        <h2>For All lower and upper alphabet</h2>
+        <label class="lab" for="text">Enter text:</label>
+        <textarea id="text" rows="5" cols="50"></textarea>
+        <br />
+        <label class="a" for="a">Value of a:</label>
+        <input class="input1" type="number" id="a" />
+        <br />
+        <label class="b" for="b">Value of b:</label>
+        <input class="input2" type="number" id="b" />
+        <br />
+        <button onclick="encryptText()">Encrypt</button>
+        <button onclick="decryptText()">Decrypt</button>
+        <br />
+        <p class="re">Result:</p>
+        <div class="result" id="result"></div>
+      </div>
+
+</div>
+
+<script>
+   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  const alphabetLength = alphabet.length;
+  function caesarCipher(text, a, b) {
+     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    const alphabetLength = alphabet.length;
+
+    let result = "";
+    if (a == 0 && b == 0) {
+      return text;
+    }
+
+    for (let i = 0; i < text.length; i++) {
+      let char2 = text.charAt(i);
+      let alphabetindexno = alphabet.indexOf(char2);
+
+      if (alphabetindexno !== -1) {
+        let shiftalphabet = (a * alphabetindexno + b) % alphabetLength;
+        if (shiftalphabet < 0) shiftalphabet += alphabetLength;
+        result += alphabet.charAt(shiftalphabet);
+      } else {
+        result += char2;
+      }
+    }
+
+    return result;
+  }
+function modInverse(a, m) {
+        for (let x = 1; x < m; x++) {
+          if ((a * x) % m === 1) {
+            return x;
+          }
+        }
+        return null; // Inverse doesn't exist
+      }
+      function caesarDecipher(ciphertext, a, b) {
+    let result = "";
+    if (a == 0 && b == 0) {
+      return text;
+    }
+    let messsage = "";
+    const a_inv = modInverse(a, 52);
+
+    for (let i = 0; i < ciphertext.length; i++) {
+      let char2 = ciphertext.charAt(i);
+      let alphabetindexno = alphabet.indexOf(char2);
+      if (alphabetindexno !== -1) {
+        let shiftalphabet = (a_inv * (alphabetindexno - b + 52)) % 52;
+        if (shiftalphabet < 0) shiftalphabet += alphabetLength;
+        messsage += alphabet.charAt(shiftalphabet);
+      } else {
+        messsage += char2;
+      }
+    }
+    return messsage;
+  }
+  function encryptText() {
+        const text = document.getElementById("text").value;
+        const a = parseInt(document.getElementById("a").value);
+        const b = parseInt(document.getElementById("b").value);
+
+        const result = caesarCipher(text, a, b);
+
+        document.getElementById("result").innerText = result;
+      }
+
+      function decryptText() {
+        const ciphertext = document.getElementById("text").value;
+        const a = parseInt(document.getElementById("a").value);
+        const b = parseInt(document.getElementById("b").value);
+
+        const result = caesarDecipher(ciphertext, a, b);
+
+        document.getElementById("result").innerText = result;
+      }
+</script>
+
+
+  </body>
+</html>
